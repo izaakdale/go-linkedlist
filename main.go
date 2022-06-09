@@ -4,22 +4,24 @@ import (
 	"fmt"
 )
 
-type LinkedList struct {
+type LinkedListNode struct {
 	Value interface{}
-	Next  *LinkedList
+	Next  *LinkedListNode
 }
 
-func printList(i *LinkedList) {
+func printList(head *LinkedListNode) {
+	i := head
+	// iterate and print until i points off the end of the list
 	for i != nil {
 		fmt.Println(i.Value)
 		i = i.Next
 	}
 }
 
-func pushFront(head *LinkedList, value interface{}) {
+func pushFront(head *LinkedListNode, value interface{}) {
 
 	// move current head to new address
-	oldHead := LinkedList{
+	oldHead := LinkedListNode{
 		Value: head.Value,
 		Next:  head.Next,
 	}
@@ -29,12 +31,37 @@ func pushFront(head *LinkedList, value interface{}) {
 	head.Next = &oldHead
 }
 
+func pushBack(head *LinkedListNode, value interface{}) {
+	i := head
+	// find last node, i.e. when next is nil
+	for i.Next != nil {
+		i = i.Next
+	}
+	// create new node
+	last := LinkedListNode{
+		Value: value,
+		Next:  nil,
+	}
+	// assign next of last node to address of new node
+	i.Next = &last
+}
+
+func insertAfter(pos *LinkedListNode, value interface{}) {
+	// create new node with specified value and address of insert position node
+	newNode := LinkedListNode{
+		Value: value,
+		Next:  pos.Next,
+	}
+	// assign next of post to address of new node
+	pos.Next = &newNode
+}
+
 func main() {
 
 	// create linked list
-	head := LinkedList{}
-	second := LinkedList{}
-	third := LinkedList{}
+	head := LinkedListNode{}
+	second := LinkedListNode{}
+	third := LinkedListNode{}
 
 	head.Value = 1
 	head.Next = &second
@@ -46,6 +73,8 @@ func main() {
 	third.Next = nil
 
 	pushFront(&head, 11)
+	pushBack(&head, 12)
+	insertAfter(&second, 13)
 
 	printList(&head)
 
