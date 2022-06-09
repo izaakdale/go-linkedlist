@@ -56,6 +56,20 @@ func insertAfter(pos *LinkedListNode, value interface{}) {
 	pos.Next = &newNode
 }
 
+func reverseList(head *LinkedListNode) {
+	curr := head
+	var prev *LinkedListNode
+	var next *LinkedListNode
+
+	for curr != nil {
+		next = curr.Next
+		curr.Next = prev
+		prev = curr
+		curr = next
+	}
+	head = prev
+}
+
 func main() {
 
 	// create linked list
@@ -72,9 +86,10 @@ func main() {
 	third.Value = 3
 	third.Next = nil
 
-	pushFront(&head, 11)
-	pushBack(&head, 12)
-	insertAfter(&second, 13)
+	pushFront(&head, "front")
+	pushBack(&head, "back")
+	insertAfter(&second, "insert")
+	reverseList(&head)
 
 	printList(&head)
 
