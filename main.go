@@ -5,7 +5,7 @@ import (
 )
 
 type LinkedListNode struct {
-	Value interface{}
+	Value int
 	Next  *LinkedListNode
 }
 
@@ -18,7 +18,7 @@ func printList(head *LinkedListNode) {
 	}
 }
 
-func pushFront(head *LinkedListNode, value interface{}) {
+func pushFront(head *LinkedListNode, value int) {
 
 	// move current head to new address
 	oldHead := LinkedListNode{
@@ -31,7 +31,7 @@ func pushFront(head *LinkedListNode, value interface{}) {
 	head.Next = &oldHead
 }
 
-func pushBack(head *LinkedListNode, value interface{}) {
+func pushBack(head *LinkedListNode, value int) {
 	i := head
 	// find last node, i.e. when next is nil
 	for i.Next != nil {
@@ -46,7 +46,7 @@ func pushBack(head *LinkedListNode, value interface{}) {
 	i.Next = &last
 }
 
-func insertAfter(pos *LinkedListNode, value interface{}) {
+func insertAfter(pos *LinkedListNode, value int) {
 	// create new node with specified value and address of insert position node
 	newNode := LinkedListNode{
 		Value: value,
@@ -57,19 +57,39 @@ func insertAfter(pos *LinkedListNode, value interface{}) {
 }
 
 func reverseList(head *LinkedListNode) {
-    curr := &LinkedListNode{
-		Value: head.Value,
-		Next: head.Next,
+	var curr = new(LinkedListNode)
+	*curr = *head
+	var prev *LinkedListNode
+	var next *LinkedListNode
+	for curr != nil {
+		next = curr.Next
+		curr.Next = prev
+		prev = curr
+		curr = next
 	}
-    var prev *LinkedListNode
-    var next *LinkedListNode
-    for curr != nil {
-        next = curr.Next
-        curr.Next = prev
-        prev = curr
-        curr = next
-    }
 	*head = *prev
+}
+
+func mergeLists(a, b *LinkedListNode) *LinkedListNode {
+	var dummy = new(LinkedListNode)
+	var cursor = dummy
+
+	for a != nil && b != nil {
+		if a.Value < b.Value {
+			cursor.Next = a
+			a = a.Next
+		} else {
+			cursor.Next = b
+			b = b.Next
+		}
+		cursor = cursor.Next
+	}
+	if a != nil {
+		cursor.Next = a
+	} else {
+		cursor.Next = b
+	}
+	return dummy.Next
 }
 
 func main() {
@@ -88,10 +108,11 @@ func main() {
 	third.Value = 3
 	third.Next = nil
 
-	pushFront(&head, "front")
-	pushBack(&head, "back")
-	insertAfter(&second, "insert")
-	printList(&head)
+	// var head2 = new(LinkedListNode)
+	// pushFront(head2, 11)
+	// pushBack(head2, 31)
+	// insertAfter(head2, 21)
+	// printList(&head)
 	reverseList(&head)
 
 	printList(&head)
