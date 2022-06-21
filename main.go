@@ -57,15 +57,17 @@ func insertAfter(pos *LinkedListNode, value int) {
 }
 
 func reverseList(head *LinkedListNode) {
-	var curr = new(LinkedListNode)
-	*curr = *head
-	var prev *LinkedListNode
-	var next *LinkedListNode
-	for curr != nil {
-		next = curr.Next
-		curr.Next = prev
-		prev = curr
-		curr = next
+	// create cursor, next and previous to allow for swapping
+	var cur = new(LinkedListNode)
+	*cur = *head
+	var next = new(LinkedListNode)
+	var prev = new(LinkedListNode)
+
+	for cur != nil {
+		next = cur.Next
+		cur.Next = prev
+		prev = cur
+		cur = next
 	}
 	*head = *prev
 }
@@ -108,13 +110,14 @@ func main() {
 	third.Value = 3
 	third.Next = nil
 
-	// var head2 = new(LinkedListNode)
-	// pushFront(head2, 11)
-	// pushBack(head2, 31)
-	// insertAfter(head2, 21)
+	var head2 = new(LinkedListNode)
+	pushBack(head2, 2)
+	pushBack(head2, 3)
+	insertAfter(head2, 1)
 	// printList(&head)
-	reverseList(&head)
+	// reverseList(&head)
+
+	mergeLists(&head, head2)
 
 	printList(&head)
-
 }
